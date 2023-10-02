@@ -6,14 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import ru.netology.data.DataGenerator;
 
-import java.beans.PropertyEditor;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static java.nio.channels.SocketChannel.open;
+import static com.codeborne.selenide.Selenide.open;
 import static ru.netology.data.DataGenerator.generateDate;
 
 class CardDeliveryTest {
@@ -23,8 +22,6 @@ class CardDeliveryTest {
         open("http://localhost:9999");
     }
 
-    private void open(String url) {
-    }
 
     @Test
     @DisplayName("Should successful plan meeting")
@@ -41,7 +38,7 @@ class CardDeliveryTest {
         $("[data-test-id=phone] Input").setValue(validUser.getPhone());
         $("[data-test-id=agreement]").click();
         $(byText("Запланировать")).click();
-        $(byText("Успешно")).shouldBe(visible, Duration.ofSeconds(15));
+        $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
         $("[data-test-id=date] Input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
         $("[data-test-id=date] Input").setValue(secondMeetingDate);
         $(byText("Запланировать")).click();
@@ -49,7 +46,7 @@ class CardDeliveryTest {
                 .shouldHave(text("У вас уже запланирована встреча на другую дату. Перепланировать?"))
                 .shouldBe(visible);
         $("[data-test-id='replan-notification'] button").click();
-        $("[data-test-id='successful-notification'] .notification__content")
+        $("[data-test-id='success-notification'] .notification__content")
                 .shouldHave(text("Встреча успешно запланирована на " + secondMeetingDate))
                 .shouldBe(visible);
     }
